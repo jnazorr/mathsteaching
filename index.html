@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ex 1K – Applications of Simultaneous Equations</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:   #1a235c;
+    --teal:   #00979c;
+    --gold:   #ffc02e;
+    --green:  #2e8648;
+    --orange: #e8571a;
+    --purple: #6a3d9a;
+    --red:    #c02020;
+    --lgray:  #f2f2f2;
+    --dgray:  #444;
+    --white:  #fff;
+  }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #eef2ff;
+         color: var(--dgray); min-height: 100vh; }
+
+  /* ── NAV ──────────────────────────────────────────────────────── */
+  nav { background: var(--navy); color: var(--white); padding: 0 1.5rem;
+        display: flex; align-items: center; justify-content: space-between;
+        position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px #0004; }
+  nav .brand { font-size: 1.1rem; font-weight: 700; padding: 1rem 0;
+               color: var(--gold); }
+  nav .nav-tabs { display: flex; gap: 0; }
+  nav .nav-tabs button {
+    background: none; border: none; color: #ccc; padding: 1rem 1.1rem;
+    cursor: pointer; font-size: 0.88rem; font-weight: 600; transition: all 0.2s;
+    border-bottom: 3px solid transparent; }
+  nav .nav-tabs button:hover { color: var(--white); }
+  nav .nav-tabs button.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .hud { display: flex; align-items: center; gap: 1rem; }
+  .xp-badge { background: var(--gold); color: var(--navy); font-weight: 800;
+              padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; }
+  .streak-badge { background: var(--orange); color: white; font-weight: 700;
+                  padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.85rem; }
+  .level-badge { background: var(--teal); color: white; font-weight: 700;
+                 padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.85rem; }
+
+  /* ── SECTIONS ─────────────────────────────────────────────────── */
+  .section { display: none; max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .section.active { display: block; }
+
+  /* ── CARDS ────────────────────────────────────────────────────── */
+  .card { background: white; border-radius: 12px; padding: 1.5rem;
+          box-shadow: 0 2px 10px #0001; margin-bottom: 1.5rem; }
+  .card-header { display: flex; align-items: center; gap: 0.7rem;
+                 margin-bottom: 1rem; }
+  .card-header h2 { font-size: 1.2rem; color: var(--navy); }
+  .tag { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 12px;
+         font-size: 0.78rem; font-weight: 700; }
+
+  /* ── HERO ─────────────────────────────────────────────────────── */
+  .hero { background: linear-gradient(135deg, var(--navy) 0%, #2a3a8c 100%);
+          color: white; border-radius: 16px; padding: 2.5rem; margin-bottom: 2rem;
+          position: relative; overflow: hidden; }
+  .hero::after { content:''; position:absolute; right:-60px; top:-60px;
+                 width:250px; height:250px; border-radius:50%;
+                 background: rgba(255,192,46,0.08); }
+  .hero h1 { font-size: 2.1rem; margin-bottom: 0.5rem; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { opacity: 0.85; max-width: 600px; line-height: 1.6; }
+  .hero .hero-meta { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+  .hero .meta-pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+                     border-radius: 20px; padding: 0.3rem 0.9rem; font-size: 0.85rem; }
+
+  /* ── ROADMAP ──────────────────────────────────────────────────── */
+  .roadmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+             gap: 1rem; margin: 1.5rem 0; }
+  .roadmap-step { border-radius: 10px; padding: 1rem; text-align: center;
+                  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .roadmap-step:hover { transform: translateY(-3px); box-shadow: 0 6px 18px #0002; }
+  .roadmap-step .time { font-size: 0.75rem; opacity: 0.8; margin-top: 0.3rem; }
+  .roadmap-step .icon { font-size: 2rem; margin-bottom: 0.4rem; }
+  .roadmap-step h3 { font-size: 0.9rem; font-weight: 700; }
+
+  /* ── QUIZ ─────────────────────────────────────────────────────── */
+  .quiz-container { max-width: 750px; margin: 0 auto; }
+  .quiz-question { background: white; border-radius: 12px; padding: 2rem;
+                   box-shadow: 0 2px 12px #0002; }
+  .quiz-question h3 { font-size: 1.1rem; color: var(--navy); margin-bottom: 0.5rem; }
+  .question-text { font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem;
+                   padding: 1rem; background: var(--lgray); border-radius: 8px;
+                   border-left: 4px solid var(--teal); }
+  .scaffold { background: #fffdf0; border: 1px dashed var(--gold); border-radius: 8px;
+              padding: 1rem; margin-bottom: 1.2rem; font-size: 0.92rem; }
+  .scaffold h4 { color: var(--navy); margin-bottom: 0.5rem; font-size: 0.95rem; }
+  .scaffold p { color: #555; line-height: 1.6; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+             margin-bottom: 1.2rem; }
+  .opt { background: var(--lgray); border: 2px solid #ddd; border-radius: 8px;
+         padding: 0.9rem 1rem; cursor: pointer; transition: all 0.2s;
+         font-size: 0.95rem; }
+  .opt:hover { border-color: var(--teal); background: #e8f8f8; }
+  .opt.correct { background: #d4f5de; border-color: var(--green); color: var(--green); }
+  .opt.wrong   { background: #fde8e8; border-color: var(--red);   color: var(--red);   }
+  .opt.disabled { pointer-events: none; }
+  .feedback { padding: 1rem; border-radius: 8px; margin-bottom: 1rem;
+              display: none; font-size: 0.95rem; }
+  .feedback.correct { background: #d4f5de; color: var(--green); }
+  .feedback.wrong   { background: #fde8e8; color: var(--red); }
+  .quiz-nav { display: flex; gap: 1rem; align-items: center; }
+  .btn { padding: 0.7rem 1.6rem; border: none; border-radius: 8px; cursor: pointer;
+         font-size: 0.95rem; font-weight: 700; transition: all 0.18s; }
+  .btn-primary { background: var(--navy); color: white; }
+  .btn-primary:hover { background: #2a3a8c; transform: translateY(-1px); }
+  .btn-teal { background: var(--teal); color: white; }
+  .btn-teal:hover { background: #007f84; }
+  .btn-gold { background: var(--gold); color: var(--navy); }
+  .btn-gold:hover { background: #e0a800; }
+  .btn-green { background: var(--green); color: white; }
+
+  /* Progress bar */
+  .progress-wrap { background: #ddd; border-radius: 20px; height: 8px;
+                   margin-bottom: 1.5rem; }
+  .progress-bar { height: 100%; border-radius: 20px; background: linear-gradient(90deg,
+                  var(--teal), var(--gold)); transition: width 0.4s ease; }
+
+  /* ── LEADERBOARD ──────────────────────────────────────────────── */
+  .leaderboard { max-width: 600px; margin: 0 auto; }
+  .lb-row { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.2rem;
+            border-radius: 10px; margin-bottom: 0.6rem; background: white;
+            box-shadow: 0 1px 6px #0001; transition: transform 0.15s; }
+  .lb-row:hover { transform: translateX(4px); }
+  .lb-row.you { background: linear-gradient(90deg, #fffbeb, #fff8d6);
+                border-left: 4px solid var(--gold); }
+  .lb-rank { font-size: 1.4rem; width: 2.5rem; text-align: center; }
+  .lb-name { flex: 1; font-weight: 600; }
+  .lb-xp { font-weight: 800; color: var(--navy); font-size: 1.1rem; }
+  .lb-bar-wrap { width: 120px; background: var(--lgray); border-radius: 10px; height: 8px; }
+  .lb-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg,
+            var(--teal), var(--gold)); }
+
+  /* ── BADGES ───────────────────────────────────────────────────── */
+  .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                 gap: 1rem; }
+  .badge-card { background: white; border-radius: 12px; padding: 1.2rem;
+                text-align: center; box-shadow: 0 2px 8px #0001;
+                position: relative; transition: transform 0.15s; }
+  .badge-card:hover { transform: translateY(-3px); }
+  .badge-card.locked { filter: grayscale(1); opacity: 0.45; }
+  .badge-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .badge-name { font-size: 0.82rem; font-weight: 700; color: var(--navy); }
+  .badge-desc { font-size: 0.72rem; color: #777; margin-top: 0.3rem; }
+  .badge-unlocked-label { position: absolute; top: 6px; right: 6px;
+                          background: var(--gold); color: var(--navy);
+                          font-size: 0.6rem; font-weight: 800;
+                          padding: 0.1rem 0.4rem; border-radius: 6px; }
+
+  /* ── CHALLENGE TIMER ──────────────────────────────────────────── */
+  .timer-ring { font-size: 3.5rem; font-weight: 900; color: var(--orange);
+                text-align: center; margin: 1rem 0; }
+  .timer-ring.warning { color: var(--red); animation: pulse 0.8s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .challenge-card { background: linear-gradient(135deg, var(--navy), #2a3a8c);
+                    color: white; border-radius: 14px; padding: 2rem;
+                    text-align: center; margin-bottom: 1.5rem; }
+  .challenge-card h2 { color: var(--gold); font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .challenge-text { font-size: 1.05rem; line-height: 1.7; opacity: 0.9;
+                    background: rgba(255,255,255,0.08); border-radius: 10px;
+                    padding: 1rem; margin: 1rem 0; }
+
+  /* ── WORKED EXAMPLE ───────────────────────────────────────────── */
+  .steps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .step-box { border-radius: 10px; padding: 1.2rem; }
+  .step-box h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.6rem; }
+  .step-box p { font-size: 0.93rem; line-height: 1.6; }
+  .step-box.s1 { background: #e0f7fa; border-top: 4px solid var(--teal); }
+  .step-box.s2 { background: #e8f5e9; border-top: 4px solid var(--green); }
+  .step-box.s3 { background: #fff3e0; border-top: 4px solid var(--orange); }
+  .step-box.s4 { background: #f3e5f5; border-top: 4px solid var(--purple); }
+
+  /* ── TOAST ────────────────────────────────────────────────────── */
+  #toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--navy);
+           color: white; padding: 0.9rem 1.5rem; border-radius: 10px;
+           font-weight: 700; font-size: 0.95rem; opacity: 0;
+           transition: opacity 0.4s; z-index: 999; pointer-events: none; }
+  #toast.show { opacity: 1; }
+
+  /* ── MISC ─────────────────────────────────────────────────────── */
+  .divider { height: 2px; background: var(--lgray); margin: 1.5rem 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media(max-width:640px) { .two-col, .steps-grid, .options { grid-template-columns: 1fr; }
+    nav .nav-tabs button { padding: 1rem 0.6rem; font-size: 0.78rem; } }
+  input[type=text], textarea {
+    width: 100%; border: 2px solid #ddd; border-radius: 8px; padding: 0.7rem;
+    font-size: 0.95rem; font-family: inherit; margin-top: 0.4rem; }
+  input[type=text]:focus, textarea:focus {
+    outline: none; border-color: var(--teal); }
+  label { font-weight: 600; color: var(--navy); font-size: 0.9rem; }
+  .xp-earned { display: inline-block; background: var(--gold); color: var(--navy);
+               font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 6px;
+               font-size: 0.82rem; margin-left: 0.4rem; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="brand">📐 Ex 1K — Simultaneous Equations</span>
+  <div class="nav-tabs">
+    <button class="active" onclick="showTab('home')">🏠 Home</button>
+    <button onclick="showTab('learn')">📖 Learn</button>
+    <button onclick="showTab('practice')">🏋 Practice</button>
+    <button onclick="showTab('challenge')">🎮 Challenge</button>
+    <button onclick="showTab('leaderboard')">🏆 Board</button>
+    <button onclick="showTab('badges')">🎖 Badges</button>
+  </div>
+  <div class="hud">
+    <span class="level-badge" id="levelBadge">Lv 1</span>
+    <span class="streak-badge" id="streakBadge">🔥 0</span>
+    <span class="xp-badge" id="xpBadge">⭐ 0 XP</span>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- HOME TAB -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="home" class="section active">
+
+  <div class="hero">
+    <h1>Applications of <span>Simultaneous</span> Linear Equations</h1>
+    <p>Welcome to the interactive lesson for Ex 1K! Work through each section,
+       earn XP, unlock badges, and compete on the leaderboard. 🚀</p>
+    <div class="hero-meta">
+      <span class="meta-pill">⏱ 55-min lesson</span>
+      <span class="meta-pill">📊 14 questions</span>
+      <span class="meta-pill">🎖 8 badges to unlock</span>
+      <span class="meta-pill">🏆 Leaderboard live</span>
+    </div>
+  </div>
+
+  <!-- Roadmap -->
+  <div class="card">
+    <div class="card-header">
+      <h2>🗺 Lesson Roadmap — Click any stage to jump there</h2>
+    </div>
+    <div class="roadmap">
+      <div class="roadmap-step" style="background:#e0f7fa;color:#006064" onclick="showTab('home')">
+        <div class="icon">⚡</div><h3>Warm-Up</h3><div class="time">0–5 min</div>
+      </div>
+      <div class="roadmap-step" style="background:#e8f5e9;color:#1b5e20" onclick="showTab('learn')">
+        <div class="icon">📖</div><h3>Learn</h3><div class="time">5–25 min</div>
+      </div>
+      <div class="roadmap-step" style="background:#fff3e0;color:#e65100" onclick="showTab('practice')">
+        <div class="icon">🏋</div><h3>Practice</h3><div class="time">25–45 min</div>
+      </div>
+      <div class="roadmap-step" style="background:#1a235c;color:#ffc02e" onclick="showTab('challenge')">
+        <div class="icon">🎮</div><h3>Challenge</h3><div class="time">45–52 min</div>
+      </div>
+      <div class="roadmap-step" style="background:#f3e5f5;color:#4a148c" onclick="showTab('badges')">
+        <div class="icon">🪞</div><h3>Reflect</h3><div class="time">52–55 min</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Warm-up quiz -->
+  <div class="card">
+    <div class="card-header">
+      <h2>⚡ Warm-Up — The Snack Bar Problem</h2>
+      <span class="tag" style="background:#00979c;color:white">+10 XP</span>
+    </div>
+    <div class="question-text">
+      At the school canteen: <br>
+      &bull; 2 pies + 3 drinks = $13.00<br>
+      &bull; 4 pies + 1 drink &nbsp;= $15.00<br><br>
+      <strong>What is the price of one pie?</strong>
+    </div>
+    <div class="scaffold">
+      <h4>💡 Scaffold</h4>
+      <p>Let <em>p</em> = price of a pie &nbsp;&nbsp;|&nbsp;&nbsp; Let <em>d</em> = price of a drink<br>
+         Write two equations, then try to eliminate one variable.</p>
+    </div>
+    <div class="options" id="warmup-opts">
+      <div class="opt" onclick="checkWarmup(this,'wrong')">$1.50</div>
+      <div class="opt" onclick="checkWarmup(this,'correct')">$3.00</div>
+      <div class="opt" onclick="checkWarmup(this,'wrong')">$2.50</div>
+      <div class="opt" onclick="checkWarmup(this,'wrong')">$3.50</div>
+    </div>
+    <div class="feedback" id="warmup-fb"></div>
+    <div class="divider"></div>
+    <p style="font-size:0.9rem;color:#666">
+      💡 <strong>Full solution:</strong> Equations: 2p + 3d = 13 &hellip;(1) &nbsp; 4p + d = 15 &hellip;(2)<br>
+      Multiply (2) by 3: 12p + 3d = 45 &hellip;(3). Subtract (1) from (3): 10p = 32 → p = $3.20<br>
+      Substitute: 4(3.20) + d = 15 → d = 15 − 12.80 = $2.20
+    </p>
+  </div>
+
+  <!-- Name entry -->
+  <div class="card">
+    <div class="card-header"><h2>👤 Set Your Name for the Leaderboard</h2></div>
+    <label>Your first name or nickname:</label>
+    <input type="text" id="playerName" placeholder="e.g. Alex" maxlength="20">
+    <div style="margin-top:0.8rem">
+      <button class="btn btn-primary" onclick="setPlayerName()">Save & Join Leaderboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- LEARN TAB -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="learn" class="section">
+
+  <h1 style="color:var(--navy);margin-bottom:1.5rem">📖 Learn — Key Concepts</h1>
+
+  <!-- 4-step method -->
+  <div class="card">
+    <div class="card-header">
+      <h2>📐 The 4-Step Method</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-box s1">
+        <h3>STEP 1 — Define Variables</h3>
+        <p>Choose a meaningful letter for each unknown.<br>
+           Write: <em>"Let x = …"</em><br>
+           Tip: use initials — <em>a</em> for adults, <em>t</em> for tickets, etc.</p>
+      </div>
+      <div class="step-box s2">
+        <h3>STEP 2 — Form Equations</h3>
+        <p>Each piece of information gives <strong>one</strong> equation.<br>
+           You need exactly <strong>2 equations</strong> for 2 unknowns.<br>
+           Label them (1) and (2).</p>
+      </div>
+      <div class="step-box s3">
+        <h3>STEP 3 — Solve Simultaneously</h3>
+        <p>Use <strong>elimination</strong> or <strong>substitution</strong>.<br>
+           Show ALL working — method marks matter!<br>
+           Find x, then substitute to find y.</p>
+      </div>
+      <div class="step-box s4">
+        <h3>STEP 4 — Answer in Context</h3>
+        <p>Write a full sentence using the original words.<br>
+           Include units ($, kg, years …)<br>
+           <strong>Check</strong>: substitute back into both equations.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Worked Example 1 -->
+  <div class="card" id="example1">
+    <div class="card-header">
+      <h2>📖 Worked Example 1 — Ticket Sales</h2>
+      <span class="tag" style="background:var(--teal);color:white">Step-by-step</span>
+    </div>
+    <div class="question-text">
+      🎟️ Adult tickets cost $12 and student tickets cost $7. A total of 350 tickets were sold,
+      raising $3&thinsp;150. How many adult and student tickets were sold?
+    </div>
+    <div id="ex1-steps" style="display:none">
+      <div class="steps-grid">
+        <div class="step-box s1">
+          <h3>Step 1 — Variables</h3>
+          <p>Let <em>a</em> = number of adult tickets<br>Let <em>s</em> = number of student tickets</p>
+        </div>
+        <div class="step-box s2">
+          <h3>Step 2 — Equations</h3>
+          <p>Total tickets: &nbsp;<strong>a + s = 350</strong> &hellip;(1)<br>
+             Total revenue: <strong>12a + 7s = 3150</strong> &hellip;(2)</p>
+        </div>
+        <div class="step-box s3">
+          <h3>Step 3 — Solve (Elimination)</h3>
+          <p>Multiply (1) by 7: &nbsp;7a + 7s = 2450 &hellip;(3)<br>
+             (2) − (3): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5a = 700<br>
+             ∴ a = 140 &nbsp;&nbsp;&nbsp; Substitute: s = 210</p>
+        </div>
+        <div class="step-box s4">
+          <h3>Step 4 — Answer</h3>
+          <p><strong>140 adult</strong> and <strong>210 student</strong> tickets were sold.<br>
+             ✅ Check: 140+210=350 ✓ &nbsp; 12(140)+7(210)=3150 ✓</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-teal" onclick="revealEx('ex1-steps',this,10)">
+      👁 Reveal Solution (+10 XP)
+    </button>
+  </div>
+
+  <!-- Worked Example 2 -->
+  <div class="card" id="example2">
+    <div class="card-header">
+      <h2>📖 Worked Example 2 — Break-Even</h2>
+      <span class="tag" style="background:var(--green);color:white">Business context</span>
+    </div>
+    <div class="question-text">
+      🏭 Emma starts a cupcake business. Fixed cost: $240. Variable cost: $1.50 per cupcake.
+      Selling price: $4.50 per cupcake.<br><br>
+      (a) Write equations for Cost <em>C</em> and Revenue <em>R</em> in terms of <em>n</em>.<br>
+      (b) Find the break-even point.
+    </div>
+    <div id="ex2-steps" style="display:none">
+      <div class="steps-grid">
+        <div class="step-box s1">
+          <h3>Part (a) — Equations</h3>
+          <p>Cost: &nbsp;&nbsp;<strong>C = 1.5n + 240</strong><br>Revenue: <strong>R = 4.5n</strong></p>
+        </div>
+        <div class="step-box s2">
+          <h3>Part (b) — Break-even: C = R</h3>
+          <p>1.5n + 240 = 4.5n<br>240 = 3n<br>∴ <strong>n = 80 cupcakes</strong></p>
+        </div>
+        <div class="step-box s3">
+          <h3>Graphical Meaning</h3>
+          <p>Cost line starts at (0, 240), gradient 1.5.<br>
+             Revenue line through origin, gradient 4.5.<br>
+             They intersect at <strong>(80, 360)</strong>.</p>
+        </div>
+        <div class="step-box s4">
+          <h3>Answer in Context</h3>
+          <p>Emma must sell <strong>80 cupcakes</strong> to break even.<br>
+             At that point her total revenue = total cost = <strong>$360</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-teal" onclick="revealEx('ex2-steps',this,10)">
+      👁 Reveal Solution (+10 XP)
+    </button>
+  </div>
+
+  <!-- Special cases -->
+  <div class="card">
+    <div class="card-header">
+      <h2>⚠️ Special Cases — Parallel &amp; Coincident Lines</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+      <div style="background:#e0f7fa;border-radius:10px;padding:1.2rem;border-top:4px solid var(--teal)">
+        <h3 style="color:var(--teal);margin-bottom:0.5rem">✅ One Solution</h3>
+        <p style="font-size:0.9rem">Lines intersect at one point.<br>Gradients are <strong>different</strong>.<br><em>Normal case.</em></p>
+      </div>
+      <div style="background:#fff3e0;border-radius:10px;padding:1.2rem;border-top:4px solid var(--orange)">
+        <h3 style="color:var(--orange);margin-bottom:0.5rem">🚫 No Solution</h3>
+        <p style="font-size:0.9rem">Lines are <strong>parallel</strong> — never meet.<br>Same gradient, different intercept.<br>Elimination gives 0 = k (impossible).</p>
+      </div>
+      <div style="background:#f3e5f5;border-radius:10px;padding:1.2rem;border-top:4px solid var(--purple)">
+        <h3 style="color:var(--purple);margin-bottom:0.5rem">∞ Infinite Solutions</h3>
+        <p style="font-size:0.9rem">Lines are <strong>identical</strong>.<br>Same gradient AND same intercept.<br>Elimination gives 0 = 0 (always true).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learn quiz -->
+  <div class="card">
+    <div class="card-header">
+      <h2>🧠 Quick Check — Special Cases</h2>
+      <span class="tag" style="background:var(--purple);color:white">+5 XP each</span>
+    </div>
+    <div id="learnQuizContainer"></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PRACTICE TAB -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="practice" class="section">
+  <h1 style="color:var(--navy);margin-bottom:0.5rem">🏋 Practice Questions</h1>
+  <p style="color:#666;margin-bottom:1.5rem">Work through each question. Enter your answer and earn XP! Use your worksheet for full working.</p>
+
+  <!-- Level filter -->
+  <div style="display:flex;gap:0.8rem;margin-bottom:1.5rem;flex-wrap:wrap">
+    <button class="btn btn-green" onclick="filterLevel('all')">All Levels</button>
+    <button class="btn" style="background:var(--green);color:white" onclick="filterLevel('foundation')">🌱 Foundation</button>
+    <button class="btn btn-teal" onclick="filterLevel('standard')">📘 Standard</button>
+    <button class="btn" style="background:var(--orange);color:white" onclick="filterLevel('advanced')">🔥 Advanced</button>
+  </div>
+
+  <div id="practiceContainer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- CHALLENGE TAB -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="challenge" class="section">
+  <h1 style="color:var(--navy);margin-bottom:0.5rem">🎮 Challenge Round</h1>
+  <p style="color:#666;margin-bottom:1.5rem">7 minutes — race against the clock to earn bonus XP!</p>
+
+  <div class="challenge-card">
+    <h2>⏱ Time Remaining</h2>
+    <div class="timer-ring" id="challengeTimer">7:00</div>
+    <button class="btn btn-gold" id="timerBtn" onclick="startChallengeTimer()">▶ Start Timer</button>
+  </div>
+
+  <div id="challengeContainer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- LEADERBOARD TAB -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="leaderboard" class="section">
+  <h1 style="color:var(--navy);margin-bottom:1.5rem">🏆 Leaderboard</h1>
+  <div class="card leaderboard">
+    <div id="lbContainer"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- BADGES TAB -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="badges" class="section">
+  <h1 style="color:var(--navy);margin-bottom:0.5rem">🎖 Your Badges</h1>
+  <p style="color:#666;margin-bottom:1.5rem">Unlock badges by completing activities and reaching XP milestones.</p>
+  <div class="card">
+    <div class="badges-grid" id="badgesGrid"></div>
+  </div>
+
+  <!-- Exit ticket -->
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-header">
+      <h2>🪞 Exit Ticket — Before you leave!</h2>
+      <span class="tag" style="background:var(--purple);color:white">+15 XP</span>
+    </div>
+    <div class="question-text">
+      A jar contains 20-cent and 50-cent coins. There are 30 coins worth $12.00 in total.
+      How many of each coin are there?
+    </div>
+    <div class="scaffold">
+      <h4>💡 Scaffold</h4>
+      <p>Let <em>t</em> = number of 20c coins &nbsp;&nbsp;|&nbsp;&nbsp; Let <em>f</em> = number of 50c coins<br>
+         Write equations for: (1) total number of coins &nbsp;&nbsp; (2) total value</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+      <div>
+        <label>Number of 20c coins:</label>
+        <input type="text" id="exitAns1" placeholder="e.g. 10">
+      </div>
+      <div>
+        <label>Number of 50c coins:</label>
+        <input type="text" id="exitAns2" placeholder="e.g. 20">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="checkExitTicket()">Submit Exit Ticket</button>
+    <div class="feedback" id="exit-fb" style="margin-top:1rem"></div>
+  </div>
+
+  <!-- Self assessment -->
+  <div class="card">
+    <div class="card-header"><h2>🟢 Self-Assessment Traffic Light</h2></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+      <button class="btn" style="background:#2e8648;color:white;padding:1.2rem;font-size:1rem"
+              onclick="selfAssess('green')">
+        🟢 Green — Got it!<br>
+        <span style="font-size:0.8rem;font-weight:400;opacity:0.9">I can set up AND solve independently</span>
+      </button>
+      <button class="btn" style="background:#c89600;color:white;padding:1.2rem;font-size:1rem"
+              onclick="selfAssess('yellow')">
+        🟡 Yellow — Nearly!<br>
+        <span style="font-size:0.8rem;font-weight:400;opacity:0.9">Can set up but need more practice solving</span>
+      </button>
+      <button class="btn" style="background:#c02020;color:white;padding:1.2rem;font-size:1rem"
+              onclick="selfAssess('red')">
+        🔴 Red — Need help!<br>
+        <span style="font-size:0.8rem;font-weight:400;opacity:0.9">Still unsure about where to start</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<script>
+// ── STATE ─────────────────────────────────────────────────────────────────
+let state = {
+  xp: 0, streak: 0, level: 1, playerName: 'You',
+  answeredPractice: new Set(),
+  answeredChallenge: new Set(),
+  unlockedBadges: new Set(),
+  challengeRunning: false, challengeSeconds: 420,
+  timerInterval: null,
+  selfAssessment: null,
+};
+
+// ── NAV ───────────────────────────────────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = ['home','learn','practice','challenge','leaderboard','badges'];
+  const idx = tabs.indexOf(id);
+  document.querySelectorAll('.nav-tabs button')[idx]?.classList.add('active');
+  if(id==='leaderboard') renderLeaderboard();
+  if(id==='badges') renderBadges();
+}
+
+// ── XP & LEVEL ────────────────────────────────────────────────────────────
+function addXP(amount, reason='') {
+  state.xp += amount;
+  document.getElementById('xpBadge').textContent = `⭐ ${state.xp} XP`;
+  const newLevel = Math.floor(state.xp / 50) + 1;
+  if(newLevel > state.level) {
+    state.level = newLevel;
+    document.getElementById('levelBadge').textContent = `Lv ${state.level}`;
+    showToast(`🎉 Level Up! You're now Level ${state.level}!`);
+  }
+  checkBadges();
+  if(reason) showToast(`+${amount} XP — ${reason}`);
+}
+
+function addStreak() {
+  state.streak++;
+  document.getElementById('streakBadge').textContent = `🔥 ${state.streak}`;
+  if(state.streak===3) showToast('🔥 3-streak! You\'re on fire!');
+  if(state.streak===5) { showToast('🏅 5-streak! Incredible!'); addXP(10,'Streak bonus!'); }
+}
+
+function breakStreak() { state.streak = 0; document.getElementById('streakBadge').textContent = '🔥 0'; }
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── PLAYER NAME ───────────────────────────────────────────────────────────
+function setPlayerName() {
+  const n = document.getElementById('playerName').value.trim();
+  if(n) { state.playerName = n; showToast(`Welcome, ${n}! Let's earn some XP! 🚀`); addXP(5,'Joined the leaderboard'); }
+}
+
+// ── WARM-UP ───────────────────────────────────────────────────────────────
+function checkWarmup(el, result) {
+  const opts = document.querySelectorAll('#warmup-opts .opt');
+  opts.forEach(o => o.classList.add('disabled'));
+  const fb = document.getElementById('warmup-fb');
+  fb.style.display = 'block';
+  if(result === 'correct') {
+    el.classList.add('correct');
+    fb.className = 'feedback correct';
+    fb.innerHTML = '✅ Correct! One pie costs $3.20. Great problem-solving!';
+    addXP(10, 'Warm-up correct!'); addStreak();
+  } else {
+    el.classList.add('wrong');
+    // highlight correct
+    opts.forEach(o => { if(o.textContent==='$3.00') o.classList.add('correct'); });
+    fb.className = 'feedback wrong';
+    fb.innerHTML = '❌ Not quite. The correct answer is $3.20 — work through the equations step by step!';
+    breakStreak();
+  }
+}
+
+// ── REVEAL EXAMPLE ────────────────────────────────────────────────────────
+let exRevealed = {};
+function revealEx(id, btn, xp) {
+  if(exRevealed[id]) return;
+  exRevealed[id] = true;
+  document.getElementById(id).style.display = 'grid';
+  btn.textContent = '✅ Revealed';
+  btn.style.background = 'var(--green)';
+  btn.disabled = true;
+  addXP(xp, 'Worked example reviewed');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// LEARN QUIZ
+// ══════════════════════════════════════════════════════════════════════════
+const learnQuestions = [
+  { q: 'Two equations: y = 3x + 2 and y = 3x − 5. How many solutions?',
+    opts: ['One solution','No solutions','Infinite solutions','Two solutions'],
+    ans: 1, exp: 'Same gradient (m=3), different intercepts → parallel lines → no solutions.' },
+  { q: 'Two equations: 2y = 4x + 6 and y = 2x + 3. How many solutions?',
+    opts: ['One solution','No solutions','Infinite solutions','Cannot determine'],
+    ans: 2, exp: 'Rearrange: y = 2x + 3 for both. Same equation → infinite solutions.' },
+  { q: 'Which step involves writing "Let a = number of adults"?',
+    opts: ['Step 2','Step 3','Step 4','Step 1'],
+    ans: 3, exp: 'Step 1 is always "Define Variables" — assign letters to unknowns.' },
+  { q: 'You use elimination on two equations and get 0 = 7. What does this mean?',
+    opts: ['x = 7','No solution (parallel lines)','Infinite solutions','y = 0'],
+    ans: 1, exp: '0 = 7 is a contradiction — it\'s impossible, so the lines are parallel (no solution).' },
+];
+
+function buildLearnQuiz() {
+  const container = document.getElementById('learnQuizContainer');
+  learnQuestions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.style.marginBottom = '1.5rem';
+    div.innerHTML = `
+      <p style="font-weight:600;color:var(--navy);margin-bottom:0.7rem">Q${i+1}: ${q.q}</p>
+      <div class="options" id="lq-opts-${i}">
+        ${q.opts.map((o,j)=>`<div class="opt" onclick="checkLearnQ(${i},${j},this)">${o}</div>`).join('')}
+      </div>
+      <div class="feedback" id="lq-fb-${i}"></div>`;
+    container.appendChild(div);
+    if(i < learnQuestions.length-1) {
+      const hr = document.createElement('div'); hr.className='divider';
+      container.appendChild(hr);
+    }
+  });
+}
+
+function checkLearnQ(qi, selected, el) {
+  const q = learnQuestions[qi];
+  const opts = document.querySelectorAll(`#lq-opts-${qi} .opt`);
+  opts.forEach(o => o.classList.add('disabled'));
+  const fb = document.getElementById(`lq-fb-${qi}`);
+  fb.style.display = 'block';
+  if(selected === q.ans) {
+    el.classList.add('correct');
+    fb.className = 'feedback correct';
+    fb.innerHTML = `✅ Correct! ${q.exp}`;
+    addXP(5,'Learn quiz correct'); addStreak();
+  } else {
+    el.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ Not quite. ${q.exp}`;
+    breakStreak();
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// PRACTICE QUESTIONS
+// ══════════════════════════════════════════════════════════════════════════
+const practiceQuestions = [
+  { id:'p1', level:'foundation', xp:10, title:'Q1 — Two Numbers ⭐',
+    q:'The sum of two numbers is 42 and their difference is 8. What is the larger number?',
+    scaffold:'Let x = larger, y = smaller. Equation (1): x + y = 42. Equation (2): x − y = 8. Add both equations: 2x = 50.',
+    ans:'25', check: v => v.trim()==='25' },
+  { id:'p2', level:'foundation', xp:10, title:'Q2 — Fruit Shop ⭐',
+    q:'3 bags of apples + 2 bags of oranges = $13. 1 bag of apples + 4 bags of oranges = $11. How much is one bag of apples? (answer in dollars, e.g. 3)',
+    scaffold:'Let a = apples, r = oranges. Multiply equation (2) by 3, then subtract from (1) to eliminate a.',
+    ans:'3', check: v => v.replace('$','').trim()==='3' },
+  { id:'p3', level:'foundation', xp:10, title:'Q3 — Perimeter ⭐',
+    q:'A rectangle has perimeter 52 cm. Its length is 8 cm more than its width. What is the length in cm?',
+    scaffold:'l + w = 26 (from perimeter ÷ 2). l − w = 8. Add to get 2l = 34.',
+    ans:'17', check: v => v.trim()==='17' },
+  { id:'p4', level:'foundation', xp:10, title:'Q4 — Mixing Solutions ⭐⭐',
+    q:'A chemist mixes 20% and 50% acid solutions to make 12 L of 35% acid. How many litres of the 20% solution are needed?',
+    scaffold:'x + y = 12 and 0.2x + 0.5y = 0.35×12 = 4.2. Multiply first eq by 0.2, subtract.',
+    ans:'6', check: v => v.trim()==='6' },
+  { id:'p5', level:'foundation', xp:10, title:'Q5 — Mobile Plans ⭐⭐',
+    q:'Plan A: $25/month + $0.10/text. Plan B: $15/month + $0.25/text. For how many texts are plans equal?',
+    scaffold:'Set equal: 25 + 0.1n = 15 + 0.25n → 10 = 0.15n.',
+    ans:'67', check: v => ['66','67','66.7','66.67'].includes(v.trim()) },
+  { id:'p6', level:'standard', xp:15, title:'Q6 — Age Problem ⭐⭐',
+    q:'Maria is 3 times as old as Lily. In 10 years, Maria will be twice Lily\'s age. How old is Maria now?',
+    scaffold:'Let m = Maria, l = Lily. Equation (1): m = 3l. Equation (2): m+10 = 2(l+10). Substitute (1) into (2).',
+    ans:'30', check: v => v.trim()==='30' },
+  { id:'p7', level:'standard', xp:15, title:'Q7 — Distance & Speed ⭐⭐',
+    q:'Two trains leave cities 480 km apart, travelling towards each other. Train A: 90 km/h, Train B: 70 km/h. After how many hours do they meet?',
+    scaffold:'Let t = time. Train A travels 90t km, Train B travels 70t km. Together they cover 480 km.',
+    ans:'3', check: v => v.trim()==='3' },
+  { id:'p8', level:'standard', xp:15, title:'Q8 — Investment ⭐⭐⭐',
+    q:'Omar invests $8000 in two accounts: 4% and 6% interest. Total interest after 1 year: $380. How much is in the 6% account? (answer in $)',
+    scaffold:'x + y = 8000 and 0.04x + 0.06y = 380. Multiply (1) by 0.04, subtract.',
+    ans:'3000', check: v => v.replace('$','').replace(',','').trim()==='3000' },
+  { id:'p9', level:'standard', xp:15, title:'Q9 — Break-Even ⭐⭐⭐',
+    q:'Fixed costs $12000, variable cost $18/unit, selling price $45/unit. How many units to break even?',
+    scaffold:'Set Cost = Revenue: 18n + 12000 = 45n → 12000 = 27n.',
+    ans:'445', check: v => ['444','445','444.4','444.44'].includes(v.trim()) },
+  { id:'p10', level:'advanced', xp:20, title:'Q10 — Reasoning ⭐⭐⭐',
+    q:'Equations: 4x + 6y = 24 and 2x + 3y = 12. How many solutions? Type: one, none, or infinite',
+    scaffold:'Divide equation (1) by 2: 2x + 3y = 12. Compare to equation (2).',
+    ans:'infinite', check: v => v.toLowerCase().includes('inf') },
+  { id:'p11', level:'advanced', xp:20, title:'Q11 — Geometry ⭐⭐⭐',
+    q:'Two supplementary angles (add to 180°). One is 24° more than 3 times the other. What is the larger angle in degrees?',
+    scaffold:'Let a = larger, b = smaller. a + b = 180. a = 3b + 24. Substitute.',
+    ans:'138', check: v => v.trim()==='138' },
+];
+
+function buildPracticeQuestions(filter='all') {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  const qs = filter==='all' ? practiceQuestions : practiceQuestions.filter(q=>q.level===filter);
+  qs.forEach(q => {
+    const done = state.answeredPractice.has(q.id);
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.setAttribute('data-level', q.level);
+    const levelColors = {foundation:'var(--green)',standard:'var(--teal)',advanced:'var(--orange)'};
+    div.innerHTML = `
+      <div class="card-header">
+        <h2>${q.title}</h2>
+        <span class="tag" style="background:${levelColors[q.level]};color:white">
+          ${q.level.charAt(0).toUpperCase()+q.level.slice(1)} • +${q.xp} XP
+        </span>
+        ${done?'<span class="tag" style="background:var(--green);color:white">✅ Done</span>':''}
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:${done?100:0}%"></div></div>
+      <div class="question-text">${q.q}</div>
+      <div class="scaffold"><h4>💡 Scaffold</h4><p>${q.scaffold}</p></div>
+      <div style="display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px">
+          <label>Your Answer:</label>
+          <input type="text" id="input-${q.id}" placeholder="Type your answer…" ${done?'disabled':''}>
+        </div>
+        <button class="btn btn-primary" onclick="checkPractice('${q.id}')" ${done?'disabled':''}>
+          ${done?'✅ Answered':'Submit (+'+q.xp+' XP)'}
+        </button>
+      </div>
+      <div class="feedback" id="fb-${q.id}"></div>`;
+    container.appendChild(div);
+  });
+}
+
+function filterLevel(level) {
+  buildPracticeQuestions(level);
+}
+
+function checkPractice(id) {
+  const q = practiceQuestions.find(q=>q.id===id);
+  const input = document.getElementById(`input-${id}`);
+  const fb = document.getElementById(`fb-${id}`);
+  const val = input.value;
+  fb.style.display = 'block';
+  if(q.check(val)) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = `✅ Correct! Well done. <span class="xp-earned">+${q.xp} XP</span>`;
+    input.disabled = true;
+    document.querySelector(`#fb-${id}`).previousElementSibling.querySelector('button').disabled = true;
+    document.querySelector(`#fb-${id}`).previousElementSibling.querySelector('button').textContent = '✅ Answered';
+    state.answeredPractice.add(id);
+    addXP(q.xp, `${q.title}`);
+    addStreak();
+    // Update progress bar
+    const card = input.closest('.card');
+    card.querySelector('.progress-bar').style.width = '100%';
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ Not quite — check your working and try again.`;
+    breakStreak();
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// CHALLENGE QUESTIONS
+// ══════════════════════════════════════════════════════════════════════════
+const challengeQuestions = [
+  { id:'c1', xp:10, stars:'⭐', title:'QUICK FIRE',
+    q:'The sum of two numbers is 56. Their difference is 14. What is the larger number?',
+    ans:'35', check: v => v.trim()==='35' },
+  { id:'c2', xp:20, stars:'⭐⭐', title:'REAL WORLD',
+    q:'Plan A costs $25/month + $0.10/text. Plan B costs $15/month + $0.25/text. For how many texts are they equal? (round to nearest whole number)',
+    ans:'67', check: v => ['66','67'].includes(v.trim()) },
+  { id:'c3', xp:30, stars:'⭐⭐⭐', title:'BOSS LEVEL',
+    q:'Two cars leave cities 480 km apart at the same time towards each other. Car A: 90 km/h, Car B: 70 km/h. How many hours until they meet?',
+    ans:'3', check: v => v.trim()==='3' },
+];
+
+function buildChallengeQuestions() {
+  const container = document.getElementById('challengeContainer');
+  challengeQuestions.forEach(q => {
+    const done = state.answeredChallenge.has(q.id);
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="card-header">
+        <h2>${q.stars} ${q.title} <span style="color:var(--gold)">+${q.xp} XP</span></h2>
+        ${done?'<span class="tag" style="background:var(--green);color:white">✅ Solved</span>':''}
+      </div>
+      <div class="challenge-text">${q.q}</div>
+      <div style="display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap">
+        <div style="flex:1">
+          <label>Answer:</label>
+          <input type="text" id="cinput-${q.id}" placeholder="Your answer…" ${done?'disabled':''}>
+        </div>
+        <button class="btn btn-gold" onclick="checkChallenge('${q.id}')" ${done?'disabled':''}>
+          ${done?'✅ Solved':'Submit'}
+        </button>
+      </div>
+      <div class="feedback" id="cfb-${q.id}"></div>`;
+    container.appendChild(div);
+  });
+}
+
+function checkChallenge(id) {
+  const q = challengeQuestions.find(q=>q.id===id);
+  const input = document.getElementById(`cinput-${id}`);
+  const fb = document.getElementById(`cfb-${id}`);
+  fb.style.display = 'block';
+  if(q.check(input.value)) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = `🔥 CORRECT! Challenge beaten! <span class="xp-earned">+${q.xp} XP</span>`;
+    input.disabled = true;
+    state.answeredChallenge.add(id);
+    addXP(q.xp, `Challenge: ${q.title}`);
+    addStreak();
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = '❌ Not quite — keep trying!';
+    breakStreak();
+  }
+}
+
+// ── CHALLENGE TIMER ───────────────────────────────────────────────────────
+function startChallengeTimer() {
+  if(state.challengeRunning) return;
+  state.challengeRunning = true;
+  document.getElementById('timerBtn').textContent = '⏳ Running…';
+  document.getElementById('timerBtn').disabled = true;
+  state.timerInterval = setInterval(() => {
+    state.challengeSeconds--;
+    const m = Math.floor(state.challengeSeconds/60);
+    const s = state.challengeSeconds % 60;
+    const display = `${m}:${String(s).padStart(2,'0')}`;
+    const el = document.getElementById('challengeTimer');
+    el.textContent = display;
+    if(state.challengeSeconds <= 60) el.classList.add('warning');
+    if(state.challengeSeconds <= 0) {
+      clearInterval(state.timerInterval);
+      el.textContent = '⏰ Time\'s up!';
+      showToast('⏰ Challenge time is up! See how many you solved.');
+      addXP(5, 'Challenge participated');
+    }
+  }, 1000);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// LEADERBOARD
+// ══════════════════════════════════════════════════════════════════════════
+const fakeBoard = [
+  {name:'Mia', xp:185},
+  {name:'Jake', xp:160},
+  {name:'Priya', xp:145},
+  {name:'Oscar', xp:120},
+  {name:'Zara', xp:95},
+  {name:'Liam', xp:80},
+  {name:'Aria', xp:65},
+];
+
+function renderLeaderboard() {
+  const board = [...fakeBoard, {name: state.playerName, xp: state.xp, you:true}]
+    .sort((a,b)=>b.xp-a.xp);
+  const maxXP = board[0].xp;
+  const container = document.getElementById('lbContainer');
+  const medals = ['🥇','🥈','🥉'];
+  container.innerHTML = board.map((p,i) => `
+    <div class="lb-row ${p.you?'you':''}">
+      <span class="lb-rank">${i<3?medals[i]:i+1}</span>
+      <span class="lb-name">${p.name}${p.you?' 👈 YOU':''}</span>
+      <div class="lb-bar-wrap">
+        <div class="lb-bar" style="width:${Math.round(p.xp/maxXP*100)}%"></div>
+      </div>
+      <span class="lb-xp">${p.xp} XP</span>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// BADGES
+// ══════════════════════════════════════════════════════════════════════════
+const allBadges = [
+  { id:'starter',    icon:'⚡', name:'Quick Starter',   desc:'Complete the warm-up',       threshold: () => document.querySelector('#warmup-fb.correct') !== null },
+  { id:'learner',    icon:'📖', name:'Eager Learner',   desc:'Reveal both worked examples', threshold: () => exRevealed['ex1-steps'] && exRevealed['ex2-steps'] },
+  { id:'xp50',       icon:'⭐', name:'XP Rookie',       desc:'Earn 50 XP',                  threshold: () => state.xp >= 50 },
+  { id:'xp100',      icon:'🌟', name:'XP Explorer',     desc:'Earn 100 XP',                 threshold: () => state.xp >= 100 },
+  { id:'xp200',      icon:'💫', name:'XP Master',       desc:'Earn 200 XP',                 threshold: () => state.xp >= 200 },
+  { id:'streak3',    icon:'🔥', name:'On Fire',         desc:'Get a 3-answer streak',        threshold: () => state.streak >= 3 },
+  { id:'foundation', icon:'🌱', name:'Solid Foundation',desc:'Complete all Foundation Qs',   threshold: () => ['p1','p2','p3','p4','p5'].every(id=>state.answeredPractice.has(id)) },
+  { id:'challenger', icon:'🎮', name:'Challenger',      desc:'Complete all Challenge Qs',    threshold: () => ['c1','c2','c3'].every(id=>state.answeredChallenge.has(id)) },
+  { id:'allclear',   icon:'🏆', name:'All Clear',       desc:'Answer all Practice Qs',       threshold: () => practiceQuestions.every(q=>state.answeredPractice.has(q.id)) },
+];
+
+function checkBadges() {
+  allBadges.forEach(b => {
+    if(!state.unlockedBadges.has(b.id) && b.threshold()) {
+      state.unlockedBadges.add(b.id);
+      showToast(`🎖 Badge Unlocked: ${b.icon} ${b.name}!`);
+    }
+  });
+}
+
+function renderBadges() {
+  const grid = document.getElementById('badgesGrid');
+  grid.innerHTML = allBadges.map(b => {
+    const unlocked = state.unlockedBadges.has(b.id);
+    return `
+      <div class="badge-card ${unlocked?'':'locked'}">
+        ${unlocked?'<span class="badge-unlocked-label">UNLOCKED</span>':''}
+        <div class="badge-icon">${b.icon}</div>
+        <div class="badge-name">${b.name}</div>
+        <div class="badge-desc">${b.desc}</div>
+      </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// EXIT TICKET
+// ══════════════════════════════════════════════════════════════════════════
+function checkExitTicket() {
+  const v1 = document.getElementById('exitAns1').value.trim();
+  const v2 = document.getElementById('exitAns2').value.trim();
+  const fb = document.getElementById('exit-fb');
+  fb.style.display = 'block';
+  // 20c=t, 50c=f. t+f=30, 0.2t+0.5f=12. → f=20, t=10
+  if(v1==='10' && v2==='20') {
+    fb.className = 'feedback correct';
+    fb.innerHTML = '✅ Perfect! 10 twenty-cent coins and 20 fifty-cent coins. Excellent work!';
+    addXP(15,'Exit ticket correct!');
+    addStreak();
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = '❌ Not quite. Set up: t + f = 30 and 0.20t + 0.50f = 12. Multiply first by 0.2, subtract, solve for f=20, t=10.';
+    breakStreak();
+  }
+}
+
+// ── SELF ASSESSMENT ───────────────────────────────────────────────────────
+function selfAssess(colour) {
+  state.selfAssessment = colour;
+  const msgs = {
+    green: '🟢 Fantastic! You\'ve got this. Come back and try the extension questions!',
+    yellow: '🟡 Good effort! Review the worked examples and try the remaining practice questions.',
+    red: '🔴 No worries — talk to your teacher and revisit the Learn tab. Everyone gets there!',
+  };
+  showToast(msgs[colour]);
+  addXP(5, 'Self-assessment completed');
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════════════════
+buildLearnQuiz();
+buildPracticeQuestions();
+buildChallengeQuestions();
+renderLeaderboard();
+renderBadges();
+</script>
+</body>
+</html>
